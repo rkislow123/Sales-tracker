@@ -261,8 +261,6 @@ function renderHistory() {
                 container.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:20px; font-size:0.9rem;">Belum ada riwayat penjualan.</div>';
                 return;
             }
-              console.log(allMonths);
-            // Ambil semua key bulan (contoh: ["2026-05", "2026-06", "2026-07"]) lalu urutkan dari yang terbaru
             const monthKeys = Object.keys(allMonths).sort().reverse();
 
             monthKeys.forEach(monthKey => {
@@ -276,7 +274,6 @@ function renderHistory() {
                 let mGmRp = days.reduce((acc, c) => acc + ((c.sales || 0) * ((c.gmPct || 0) / 100)), 0);
                 let mGmPct = mSales > 0 ? (mGmRp / mSales) * 100 : 0;
 
-                // Konversi format YYYY-MM (misal "2026-07") menjadi "Juli 2026"
                 const bln = monthKey;
                 const thn = tahun;
                 const namaBulan = new Date(thn, bln - 1).toLocaleString('id-ID', { month: 'long', year: 'numeric' });

@@ -253,7 +253,7 @@ function renderHistory() {
         container.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:20px; font-size:0.9rem;">Memuat data seluruh bulan...</div>';
 
         // Tarik seluruh folder bulan dari parent node 'salesData' di Firebase
-        dbRef.child('salesData').once('value', snapshot => {
+        dbRef.child(`salesData/${tahun}`).once('value', snapshot => {
             container.innerHTML = ''; // Bersihkan loading
             const allMonths = snapshot.val();
 
@@ -261,7 +261,7 @@ function renderHistory() {
                 container.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:20px; font-size:0.9rem;">Belum ada riwayat penjualan.</div>';
                 return;
             }
-
+              console.log(allMonths);
             // Ambil semua key bulan (contoh: ["2026-05", "2026-06", "2026-07"]) lalu urutkan dari yang terbaru
             const monthKeys = Object.keys(allMonths).sort().reverse();
 
@@ -277,7 +277,8 @@ function renderHistory() {
                 let mGmPct = mSales > 0 ? (mGmRp / mSales) * 100 : 0;
 
                 // Konversi format YYYY-MM (misal "2026-07") menjadi "Juli 2026"
-                const [thn, bln] = monthKey.split('-');
+                const [thn, bln] = monthKey;
+                console.log(thn, bln);
                 const namaBulan = new Date(thn, bln - 1).toLocaleString('id-ID', { month: 'long', year: 'numeric' });
 
                 // Render Kartu Riwayat Per Bulan

@@ -277,8 +277,8 @@ function renderHistory() {
                 let mGmPct = mSales > 0 ? (mGmRp / mSales) * 100 : 0;
 
                 // Konversi format YYYY-MM (misal "2026-07") menjadi "Juli 2026"
-                const [thn, bln] = monthKey;
-                console.log(thn, bln);
+                const bln = monthKey;
+                const thn = tahun;
                 const namaBulan = new Date(thn, bln - 1).toLocaleString('id-ID', { month: 'long', year: 'numeric' });
 
                 // Render Kartu Riwayat Per Bulan

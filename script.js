@@ -34,7 +34,7 @@ firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     setupRealtimeListeners();
   } else {
-    window.location.replace("login.html"); 
+    window.location.replace("Login.html"); 
   }
 });
 // 3. Fungsi Logout

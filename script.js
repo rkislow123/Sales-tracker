@@ -23,9 +23,7 @@ monthPicker.value = `${tahun}-${bulan}`;
 
 monthPicker.addEventListener('change', function(e) {
     const bulanPilihan = e.target.value;
-    const [newtahun, newbulan] = bulanPilihan.split("-");
-    tahun = newtahun;
-    bulan = newbulan;
+    [tahun, bulan] = bulanPilihan.split("-");
     setupRealtimeListeners(); 
 });
 

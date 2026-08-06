@@ -471,7 +471,7 @@ input[type="month"] {
    DESKTOP & LAPTOP RESPONSIVE DASHBOARD MODE (min-width: 1024px)
    ========================================================= */
 
-@media (min-width: 980px) {
+@media (min-width: 1024px) {
 
     /* 1. Atur Body & Kontainer Utama agar Melebar */
     body {
@@ -528,8 +528,12 @@ input[type="month"] {
         /* Sisi Kiri lebih lebar dari Sisi Kanan */
         gap: 24px;
         padding: 0 32px 32px 32px;
+        max-height: calc(100vh - 320px);
+        min-height: 300px;
+        overflow-y:auto;
+        border: 2px solid black;
+            
     }
-
     /* Area Kiri: Fokus Grafik Penjualan & Rekap */
     .desktop-left-panel {
         display: flex;
@@ -553,6 +557,7 @@ input[type="month"] {
         padding: 24px;
         border: 1px solid #1e293b;
         height: fit-content;
+        overflow-y: auto;
     }
 
     /* Kustomisasi Tampilan Tab Konten di Desktop */

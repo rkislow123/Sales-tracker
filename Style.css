@@ -65,6 +65,21 @@ label {
     margin-top: 10px;
 }
 
+/*MontPicker*/
+input[type="month"] {
+  width: auto;
+  min-width: 125px;      /* Memastikan ruang cukup untuk '2026-07' atau 'Juli 2026' */
+  padding: 4px 6px;      /* Kurangi padding horizontal agar teks tidak kehabisan tempat */
+  text-align: center;    /* Ratakan teks ke tengah agar rapi */
+  box-sizing: border-box;
+}
+
+/* Mengatur ulang ruang ikon kalender bawaan Chrome HP */
+input[type="month"]::-webkit-calendar-picker-indicator {
+  margin-left: 2px;
+  padding: 0;
+  cursor: pointer;
+}
 
 /* Mobile Container Simulation */
 .app-container {

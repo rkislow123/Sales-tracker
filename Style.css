@@ -471,7 +471,7 @@ input[type="month"] {
    DESKTOP & LAPTOP RESPONSIVE DASHBOARD MODE (min-width: 1024px)
    ========================================================= */
 
-@media (min-width: 1024px) {
+@media (min-width: 980px) {
 
     /* 1. Atur Body & Kontainer Utama agar Melebar */
     body {

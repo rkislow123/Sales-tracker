@@ -341,8 +341,8 @@ label {
 .history-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    max-height: 480px;
+    gap: 7px;
+    max-height: 100vh;
     overflow-y: auto;
 }
 
@@ -350,7 +350,7 @@ label {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 10px 12px;
+    padding: 10px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;

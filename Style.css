@@ -74,13 +74,6 @@ input[type="month"] {
   box-sizing: border-box;
 }
 
-/* Mengatur ulang ruang ikon kalender bawaan Chrome HP */
-input[type="month"]::-webkit-calendar-picker-indicator {
-  margin-left: 2px;
-  padding: 0;
-  cursor: pointer;
-}
-
 /* Mobile Container Simulation */
 .app-container {
     width: 100%;

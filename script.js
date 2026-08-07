@@ -9,6 +9,8 @@ let currentFilter = 'hari';
 let salesChart;
 let dbRef = null;
 let rawData = [];
+let kd_toko = null;
+let storeName = null; 
 
 let tahun = new Date().getFullYear();
 let bulan = String(new Date().getMonth() + 1).padStart(2, '0');
@@ -30,6 +32,7 @@ monthPicker.addEventListener('change', function(e) {
 //Function Login
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
+    kd_toko = user.email.split('@')[0].toUpperCase();
     setupRealtimeListeners();
   } else {
     window.location.replace("Login.html"); 
@@ -47,14 +50,14 @@ function logoutUser() {
 function setupRealtimeListeners() {
     try {
         if (!dbRef) {
-            dbRef = firebase.database().ref('taman_griya_store');
+            dbRef = firebase.database().ref(`stores`);
         }
 
-        dbRef.child(`salesData/${tahun}/${bulan}`).off();
-        dbRef.child(`targetConfig/${tahun}/${bulan}`).off();
+        dbRef.child(`${kd_toko}/salesData/${tahun}/${bulan}`).off();
+        dbRef.child(`${kd_toko}/targetConfig/${tahun}/${bulan}`).off();
 
         // Realtime listener for Sales Data
-        dbRef.child(`salesData/${tahun}/${bulan}`).on('value', (snapshot) => {
+        dbRef.child(`${kd_toko}/salesData/${tahun}/${bulan}`).on('value', (snapshot) => {
             let val = snapshot.val();
             if (val) {
                 rawData = Object.values(val).filter(Boolean);
@@ -66,7 +69,7 @@ function setupRealtimeListeners() {
         });
 
         // Realtime listener for Target Config
-        dbRef.child(`targetConfig/${tahun}/${bulan}`).on('value', (snapshot) => {
+        dbRef.child(`${kd_toko}/targetConfig/${tahun}/${bulan}`).on('value', (snapshot) => {
             let val = snapshot.val();
             if (val) {
                 targetConfig = val;
@@ -74,7 +77,15 @@ function setupRealtimeListeners() {
             recalculateAndRender();
         });
 
-        // Update indikator sync
+        // Update indikator sync dan Nama Toko
+        dbRef.child(`${kd_toko}/profile`).on('value', (snapshot) => {
+            let val = snapshot.val();
+            if(val){
+                storeName = val.storeName;
+            };
+         
+            recalculateAndRender();
+        });
         const syncBadge = document.getElementById('sync-status');
         if (syncBadge) syncBadge.style.background = '#22c55e';
         
@@ -104,7 +115,7 @@ function saveTargetSettings() {
 
     closeTargetModal();
     if (dbRef) {
-        dbRef.child(`targetConfig/${tahun}/${bulan}`).set(targetConfig);
+        dbRef.child(`${kd_toko}/targetConfig/${tahun}/${bulan}`).set(targetConfig);
     }
     recalculateAndRender();
 }
@@ -135,6 +146,9 @@ function recalculateAndRender() {
         gapSales / remainingDays): 0;
     const spdGm = (remainingDays > 0 && targetConfig.gmPct > 0) ? Math.max(0,
         (gapGmRp / (targetConfig.gmPct / 100)) / remainingDays): 0;
+    
+    // UI Update Store Name
+    document.getElementById("store-name").innerHTML = `<span>${storeName}</span>`;
 
     // UI Updates Header
     document.getElementById('disp-header-target-sales').innerText = formatRupiah(targetConfig.salesBulanan);
@@ -251,7 +265,7 @@ function renderHistory() {
         container.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:20px; font-size:0.9rem;">Memuat data seluruh bulan...</div>';
 
         // Tarik seluruh folder bulan dari parent node 'salesData' di Firebase
-        dbRef.child(`salesData/${tahun}`).once('value', snapshot => {
+        dbRef.child(`${kd_toko}/salesData/${tahun}`).once('value', snapshot => {
             container.innerHTML = ''; // Bersihkan loading
             const allMonths = snapshot.val();
 
@@ -315,7 +329,7 @@ function editData(tgl) {
 function deleteData(tgl) {
     if (confirm(`Yakin ingin menghapus data penjualan tanggal ${tgl}?`)) {
         if (dbRef) {
-            dbRef.child(`salesData/${tahun}/${bulan}`).child(tgl).remove();
+            dbRef.child(`${kd_toko}/salesData/${tahun}/${bulan}`).child(tgl).remove();
         } else {
             rawData = rawData.filter(d => d.tgl !== tgl);
             recalculateAndRender();
@@ -344,7 +358,7 @@ document.getElementById('salesForm').addEventListener('submit', function(e) {
     const gmPct = parseFloat(document.getElementById('input-gm').value);
 
     if (dbRef) {
-        dbRef.child(`salesData/${thn}/${bln}`).child(tgl).set({
+        dbRef.child(`${kd_toko}/salesData/${thn}/${bln}`).child(tgl).set({
             tgl, sales, gmPct
         });
     } else {

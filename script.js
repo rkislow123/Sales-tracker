@@ -450,7 +450,33 @@ function updateChart(targetDaily) {
         salesChart.data.datasets[1].data = targetLine;
         salesChart.update();
     }
+};
+
+// Load preferensi tema saat aplikasi dibuka
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+});
+
+// Fungsi menerapkan atribut data-theme
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const themeIcon = document.getElementById('theme-icon');
+    if (themeIcon) {
+        // Jika Dark Mode tampilkan Matahari ☀️ (untuk switch ke terang)
+        // Jika Light Mode tampilkan Bulan 🌙 (untuk switch ke gelap)
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+    localStorage.setItem('theme', theme);
 }
+
+// Fungsi trigger klik tombol
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+}
+
 
 // Initialization
 window.onload = function() {

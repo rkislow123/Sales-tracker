@@ -4,10 +4,26 @@
     --secondary: #059669;
     --accent: #d97706;
     --danger: #dc2626;
+
+    /* Tema Default: Light Mode */
     --bg: #f8fafc;
     --card-bg: #ffffff;
     --text-main: #0f172a;
     --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --input-bg: #ffffff;
+    --filter-bg: #e2e8f0;
+}
+
+/* Override Tema: Dark Mode / Mode Malam */
+[data-theme="dark"] {
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --input-bg: #0f172a;
+    --filter-bg: #334155;
 }
 
 * {
@@ -24,13 +40,34 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* LOGIN */
+/* LOGIN & MODAL */
+.modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
 .modal-content {
-    background-color: #0f172a;
-    border: 1px solid #334155;
-    color: white;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 340px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .modal-header {
@@ -41,16 +78,16 @@ body {
 .modal-header h2 {
     font-size: 1.3rem;
     margin-bottom: 6px;
-    color: #000;
+    color: var(--text-main);
 }
 
 .modal-header p {
     font-size: 0.75rem;
-    color: #94a3b8;
+    color: var(--text-muted);
 }
 
 label {
-    color: #cbd5e1;
+    color: var(--text-main);
 }
 
 #login-error {
@@ -65,13 +102,17 @@ label {
     margin-top: 10px;
 }
 
-/*MontPicker*/
+/* MonthPicker */
 input[type="month"] {
-  width: auto;
-  min-width: 100px;      /* Memastikan ruang cukup untuk '2026-07' atau 'Juli 2026' */
-  padding: 4px 6px;      /* Kurangi padding horizontal agar teks tidak kehabisan tempat */
-  text-align: center;    /* Ratakan teks ke tengah agar rapi */
-  box-sizing: border-box;
+    width: auto;
+    min-width: 100px;
+    padding: 4px 6px;
+    text-align: center;
+    box-sizing: border-box;
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
 }
 
 /* Mobile Container Simulation */
@@ -80,11 +121,13 @@ input[type="month"] {
     max-width: 100%;
     height: 100dvh;
     background-color: var(--bg);
+    color: var(--text-main);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Header */
@@ -123,6 +166,7 @@ input[type="month"] {
 
 .header-btns {
     display: flex;
+    align-items: center;
     gap: 6px;
 }
 
@@ -130,12 +174,38 @@ input[type="month"] {
     background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
-    padding: 6px 8px;
+    padding: 6px 10px;
     border-radius: 8px;
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     cursor: pointer;
     backdrop-filter: blur(4px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.85;
 }
+
+.top-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+/* Style Khusus Tombol Ikon Minimalis */
+.top-btn.icon-btn {
+    padding: 5px 7px;
+    font-size: 0.7rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.top-btn.icon-btn:active {
+    background: rgba(255, 255, 255, 0.28);
+}
+
 
 .target-summary {
     display: grid;
@@ -184,7 +254,8 @@ input[type="month"] {
     padding: 16px;
     margin-bottom: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .card-title {
@@ -210,8 +281,9 @@ input[type="month"] {
     padding: 12px;
     border-radius: 12px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     border-left: 4px solid var(--primary-light);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .metric-card.warning {
@@ -246,8 +318,8 @@ input[type="month"] {
 
 /* Gap Box */
 .gap-box {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 14px;
@@ -265,7 +337,7 @@ input[type="month"] {
     justify-content: space-between;
     font-size: 0.7rem;
     margin-bottom: 3px;
-    color: #7f1d1d;
+    color: var(--text-main);
 }
 
 /* Form Styles */
@@ -284,10 +356,13 @@ input[type="month"] {
 .form-control {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #cbd5e1;
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 0.88rem;
     outline: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .form-control:focus {
@@ -323,10 +398,11 @@ input[type="month"] {
 /* History Filter Tabs */
 .filter-bar {
     display: flex;
-    background: #e2e8f0;
+    background: var(--filter-bg);
     border-radius: 10px;
     padding: 3px;
     margin-bottom: 12px;
+    transition: background-color 0.3s ease;
 }
 
 .filter-opt {
@@ -341,7 +417,7 @@ input[type="month"] {
 }
 
 .filter-opt.active {
-    background: white;
+    background: var(--card-bg);
     color: var(--primary-light);
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
@@ -356,13 +432,14 @@ input[type="month"] {
 }
 
 .history-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 10px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .history-info {
@@ -392,7 +469,7 @@ input[type="month"] {
 .history-val {
     font-weight: 700;
     font-size: 0.85rem;
-    color: var(--primary);
+    color: var(--primary-light);
 }
 
 .action-icon {
@@ -400,8 +477,9 @@ input[type="month"] {
     cursor: pointer;
     padding: 4px;
     border-radius: 6px;
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
 }
 
 /* Bottom Nav */
@@ -412,10 +490,11 @@ input[type="month"] {
     right: 0;
     height: 65px;
     background: var(--card-bg);
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-around;
     align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-item {
@@ -441,56 +520,25 @@ input[type="month"] {
     width: 100%;
 }
 
-/* Modals */
-.modal {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(2px);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    width: 100%;
-    max-width: 340px;
-}
-
-
-
 /* =========================================================
    DESKTOP & LAPTOP RESPONSIVE DASHBOARD MODE (min-width: 1024px)
    ========================================================= */
 
 @media (min-width: 1024px) {
 
-    /* 1. Atur Body & Kontainer Utama agar Melebar */
     body {
         align-items: flex-start;
-        /* Biar tidak mentok di tengah vertikal */
         background-color: #020617;
     }
 
     .app-container {
         max-width: 1366px;
-        /* Melebar proporsional di laptop */
         height: auto;
-        /* Mengikuti tinggi konten, bukan fixed 900px */
         min-height: calc(100vh - 48px);
         border: none;
         overflow: visible;
     }
 
-    /* 2. Header & Navigasi Terintegrasi */
     .header {
         display: flex;
         justify-content: space-between;
@@ -503,38 +551,32 @@ input[type="month"] {
         gap: 20px;
     }
 
-   .nav-bar {
+    .nav-bar {
         display: none !important;
     }
 
-    /* 3. Grid Ringkasan Kartu / Metrics (4 Kolom Ke Samping) */
     .metrics-grid, .cards-container {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        /* 4 Kartu sejajar */
         gap: 16px;
         padding: 24px 32px;
     }
 
     .card {
         margin-bottom: 0;
-        /* Hapus margin bawah karena pakai gap grid */
     }
 
-    /* 4. Layout Utama Split Screen (Dua Area Samping-sampingan) */
     .main-content-desktop {
         display: grid;
         grid-template-columns: 1.8fr 1fr;
-        /* Sisi Kiri lebih lebar dari Sisi Kanan */
         gap: 24px;
         padding: 0 32px 32px 32px;
         max-height: calc(100vh - 320px);
         min-height: 300px;
-        overflow-y:auto;
-        border: 2px solid black;
-            
+        overflow-y: auto;
+        border: 2px solid var(--border-color);
     }
-    /* Area Kiri: Fokus Grafik Penjualan & Rekap */
+
     .desktop-left-panel {
         display: flex;
         flex-direction: column;
@@ -543,26 +585,24 @@ input[type="month"] {
 
     .chart-container {
         height: 380px;
-        /* Grafik lebih tinggi dan jelas */
-        background: #0f172a;
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 20px;
-        border: 1px solid #1e293b;
+        border: 1px solid var(--border-color);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
-    /* Area Kanan: Form Input Penjualan (Selalu Terlihat Tanpa Perlu Pindah Tab) */
     .desktop-right-panel {
-        background: #0f172a;
+        background: var(--card-bg);
         border-radius: 16px;
         padding: 24px;
-        border: 1px solid #1e293b;
+        border: 1px solid var(--border-color);
         height: fit-content;
         overflow-y: auto;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
-    /* Kustomisasi Tampilan Tab Konten di Desktop */
     .tab-content {
         display: block !important;
-        /* Di desktop, form input & chart bisa tampil bareng */
     }
 }

@@ -1,194 +1,60 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Executive Dashboard - Multi Store</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root {
-      --bg-dark: #0f172a;
-      --card-bg: #1e293b;
-      --accent-gold: #f59e0b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-    }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
-    
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      padding: 20px;
-      min-height: 100vh;
-    }
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    /* Top Executive Header */
-    .header-owner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 24px;
-      border-bottom: 1px solid #334155;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .badge-owner {
-      background: rgba(245, 158, 11, 0.15);
-      color: var(--accent-gold);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      border: 1px solid var(--accent-gold);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* Executive Metrics Cards */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .metric-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid #334155;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-    }
-
-    .metric-card.gold-border {
-      border-top: 4px solid var(--accent-gold);
-    }
-
-    .metric-title { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; }
-    .metric-value { font-size: 1.6rem; font-weight: 800; color: #fff; }
-    .metric-sub { font-size: 0.8rem; color: var(--success); margin-top: 4px; }
-
-    /* Store Comparison Section */
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .store-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      margin-bottom: 32px;
-    }
-
-    .store-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid #334155;
-      position: relative;
-    }
-
-    .store-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .store-name { font-size: 1.1rem; font-weight: 700; color: #fff; }
-    
-    .progress-bar-bg {
-      background: #334155;
-      height: 8px;
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 12px 0;
-    }
-
-    .progress-bar-fill {
-      background: linear-gradient(90deg, #2563eb, var(--success));
-      height: 100%;
-    }
-
-    .btn-detail {
-      width: 100%;
-      background: #334155;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: all 0.2s;
-    }
-
-    .btn-detail:hover { background: #475569; }
-
-    /* Chart Container */
-    .chart-container {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid #334155;
-      height: 400px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
 
+<body>
   <div class="container">
     <div class="header-owner">
       <div>
         <span class="badge-owner">👑 Owner Executive Dashboard</span>
         <h1 style="font-size: 1.8rem; margin-top: 6px;">Multi-Store Performance Analytics</h1>
       </div>
-      <div>
-        <input type="month" id="ownerMonthPicker" value="2026-08" style="background: var(--card-bg); color: #fff; border: 1px solid #334155; padding: 8px 16px; border-radius: 8px;">
+      <div class="header-actions">
+        <input type="month" id="ownerMonthPicker" value="2026-08" class="month-picker-owner">
+        <button class="btn-add-store" onclick="openAddStoreModal()">➕ Tambah Toko</button>
       </div>
     </div>
-
+    
     <div class="metrics-grid">
       <div class="metric-card gold-border">
         <div class="metric-title">TOTAL SALES KONSOLIDASI</div>
-        <div class="metric-value">Rp 850.450.000</div>
-        <div class="metric-sub">🟢 +12% vs Bulan Lalu</div>
+        <div class="metric-value" id="totalKonsolidasiSales">Rp 850.450.000</div>
+        <div class="metric-sub">🟢 Performa Gabungan</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">TOTAL GROSS MARGIN (Rp)</div>
-        <div class="metric-value">Rp 168.200.000</div>
+        <div class="metric-value" id="totalKonsolidasiGm">Rp 168.200.000</div>
         <div class="metric-sub">Margin Avg: 19.78%</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">PENCAPAIAN TARGET GABUNGAN</div>
-        <div class="metric-value">88.5%</div>
-        <div class="metric-sub">Sisa Target: Rp 110.000.000</div>
+        <div class="metric-value" id="totalKonsolidasiAcv">88.5%</div>
+        <div class="metric-sub">Target Konsolidasi</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">STATUS CABANG TOKO</div>
-        <div class="metric-value">3 / 3 Active</div>
-        <div class="metric-sub">Semua Toko Sudah Update Hari Ini</div>
+        <div class="metric-value" id="totalActiveStore">3 Active</div>
+        <div class="metric-sub">Terhubung Realtime</div>
       </div>
     </div>
+    
+    <div class="section-header">
+      <div class="section-title">🏢 Performa Masing-Masing Toko</div>
+      <button class="btn-add-store-sm" onclick="openAddStoreModal()">+ Tambah Toko Baru</button>
+    </div>
 
-    <div class="section-title">🏢 Performa Masing-Masing Toko</div>
-    <div class="store-grid">
+    <div class="store-grid" id="storeGridContainer">
       
       <div class="store-card">
         <div class="store-header">
@@ -203,9 +69,9 @@
           <span>GM %: <b>19.9%</b></span>
           <span>Avg Sales/Hari: <b>Rp 15.2jt</b></span>
         </div>
-        <button class="btn-detail" onclick="switchStoreView('taman_griya')">Lihat Detail Toko ini ➔</button>
+        <button class="btn-detail" onclick="openStoreDetail('taman_griya')">Lihat Detail Toko ini ➔</button>
       </div>
-
+      
       <div class="store-card">
         <div class="store-header">
           <div class="store-name">🥈 Kuta Branch Store</div>
@@ -219,9 +85,9 @@
           <span>GM %: <b>20.1%</b></span>
           <span>Avg Sales/Hari: <b>Rp 12.8jt</b></span>
         </div>
-        <button class="btn-detail" onclick="switchStoreView('kuta_branch')">Lihat Detail Toko ini ➔</button>
+        <button class="btn-detail" onclick="openStoreDetail('kuta_branch')">Lihat Detail Toko ini ➔</button>
       </div>
-
+      
       <div class="store-card">
         <div class="store-header">
           <div class="store-name">🥉 Denpasar Store</div>
@@ -235,61 +101,97 @@
           <span>GM %: <b>18.8%</b></span>
           <span>Avg Sales/Hari: <b>Rp 8.9jt</b></span>
         </div>
-        <button class="btn-detail" onclick="switchStoreView('denpasar')">Lihat Detail Toko ini ➔</button>
+        <button class="btn-detail" onclick="openStoreDetail('denpasar')">Lihat Detail Toko ini ➔</button>
       </div>
-
+      
     </div>
-
+    
     <div class="section-title">📈 Tren Grafik Penjualan Antar Toko</div>
     <div class="chart-container">
       <canvas id="multiStoreChart"></canvas>
     </div>
-
+    
   </div>
 
-  <script>
-    // Dummy Data Chart Multi-Toko
-    const ctx = document.getElementById('multiStoreChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Tgl 1', 'Tgl 2', 'Tgl 3', 'Tgl 4', 'Tgl 5', 'Tgl 6', 'Tgl 7'],
-        datasets: [
-          {
-            label: 'Taman Griya',
-            data: [12, 19, 15, 17, 22, 24, 20],
-            borderColor: '#2563eb',
-            tension: 0.3
-          },
-          {
-            label: 'Kuta Branch',
-            data: [10, 15, 12, 14, 18, 19, 17],
-            borderColor: '#10b981',
-            tension: 0.3
-          },
-          {
-            label: 'Denpasar Store',
-            data: [7, 9, 8, 11, 10, 12, 11],
-            borderColor: '#f59e0b',
-            tension: 0.3
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: '#fff' } } },
-        scales: {
-          x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-          y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
-        }
-      }
-    });
-
-    function switchStoreView(storeId) {
-      // Nanti dialihkan ke dashboard toko individual dengan query param storeId
-      window.location.href = `index.html?store=${storeId}`;
-    }
-  </script>
+  <div id="modalStoreDetail" class="modal-overlay">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalStoreName" class="store-title">Detail Toko</h3>
+          <p id="modalStoreCode" class="store-subtitle">ID: -</p>
+        </div>
+        <button class="btn-close" onclick="closeStoreDetail()">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="label">Target Sales</span>
+            <h4 id="detailTargetSales">Rp 0</h4>
+          </div>
+          <div class="metric-card">
+            <span class="label">Pencapaian (Acv)</span>
+            <h4 id="detailAcvPct">0%</h4>
+          </div>
+          <div class="metric-card">
+            <span class="label">Total Sales (MTD)</span>
+            <h4 id="detailTotalSales">Rp 0</h4>
+          </div>
+          <div class="metric-card">
+            <span class="label">Total Hari Kerja</span>
+            <h4 id="detailTotalDays">0 Hari</h4>
+          </div>
+        </div>
+        
+        <div class="chart-container-modal">
+          <h5 style="margin-bottom: 12px; color: var(--text-muted);">Grafik Penjualan Harian</h5>
+          <div class="chart-wrapper">
+            <canvas id="detailStoreChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="modalAddStore" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>➕ Tambah Toko Baru</h3>
+        <button class="btn-close" onclick="closeAddStoreModal()">&times;</button>
+      </div>
+      
+      <form id="formAddStore" onsubmit="handleCreateStore(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>ID Toko / Kode Unik (tanpa spasi)</label>
+            <input type="text" id="newStoreId" placeholder="contoh: taman_griya_2" required pattern="[a-zA-Z0-9_-]+" title="Gunakan huruf, angka, underscore atau strip">
+          </div>
+          
+          <div class="form-group">
+            <label>Nama Toko</label>
+            <input type="text" id="newStoreName" placeholder="contoh: Taman Griya Cabang 2" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Lokasi / Alamat Singkat</label>
+            <input type="text" id="newStoreLocation" placeholder="contoh: Jimbaran, Bali" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Target Sales Bulanan (Rp)</label>
+            <input type="number" id="newStoreTarget" placeholder="800000000" required>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeAddStoreModal()">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Toko</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
 </body>
+
 </html>

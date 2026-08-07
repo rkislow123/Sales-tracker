@@ -77,7 +77,7 @@ function setupRealtimeListeners() {
             recalculateAndRender();
         });
 
-        // Update indikator sync dan Nama Toko
+        // Update indikator sync dan 
         dbRef.child(`${kd_toko}/profile`).on('value', (snapshot) => {
             let val = snapshot.val();
             if(val){
@@ -175,7 +175,7 @@ function recalculateAndRender() {
     }else if(avgSalesDaily < targetDaily){
         document.getElementById('fokus').innerText = 'EVAKUASI SPD!';
     }else{
-        document.getElementById('fokus').innerText = 'EVAKUASI!';
+        document.getElementById('fokus').innerText = '';
     };
     document.getElementById('disp-remaining-days').innerText = `${remainingDays} Hari`;
     document.getElementById('disp-spd-sales').innerText = `${formatRupiah(spdSales)} /hr`;

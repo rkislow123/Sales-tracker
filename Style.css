@@ -176,7 +176,7 @@ input[type="month"] {
     color: white;
     padding: 6px 10px;
     border-radius: 8px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     cursor: pointer;
     backdrop-filter: blur(4px);
     display: inline-flex;
@@ -193,7 +193,6 @@ input[type="month"] {
 /* Style Khusus Tombol Ikon Minimalis */
 .top-btn.icon-btn {
     padding: 5px 7px;
-    font-size: 0.7rem;
     line-height: 1;
     display: inline-flex;
     align-items: center;

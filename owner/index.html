@@ -5,11 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Executive Dashboard - Multi Store</title>
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
+  <!-- Firebase App & Realtime Database CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -53,7 +55,7 @@
       <div class="section-title">🏢 Performa Masing-Masing Toko</div>
       <button class="btn-add-store-sm" onclick="openAddStoreModal()">+ Tambah Toko Baru</button>
     </div>
-
+    
     <div class="store-grid" id="storeGridContainer">
       
       <div class="store-card">
@@ -112,7 +114,7 @@
     </div>
     
   </div>
-
+  
   <div id="modalStoreDetail" class="modal-overlay">
     <div class="modal-content modal-lg">
       <div class="modal-header">
@@ -123,34 +125,52 @@
         <button class="btn-close" onclick="closeStoreDetail()">&times;</button>
       </div>
       
-      <div class="modal-body">
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <span class="label">Target Sales</span>
-            <h4 id="detailTargetSales">Rp 0</h4>
+      <div id="modalStoreDetail" class="modal-overlay">
+        <div class="modal-content modal-lg">
+          <div class="modal-header">
+            <div>
+              <h3 id="modalStoreName" class="store-title">Detail Toko</h3>
+              <p id="modalStoreCode" class="store-subtitle">ID: -</p>
+            </div>
+            <button class="btn-close" onclick="closeStoreDetail()" aria-label="Tutup">&times;</button>
           </div>
-          <div class="metric-card">
-            <span class="label">Pencapaian (Acv)</span>
-            <h4 id="detailAcvPct">0%</h4>
+          
+          <div class="modal-body">
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <span class="label">Target Sales</span>
+                <h4 id="detailTargetSales">Rp 0</h4>
+              </div>
+              <div class="metric-card">
+                <span class="label">Pencapaian (Acv)</span>
+                <h4 id="detailAcvPct">0%</h4>
+              </div>
+              <div class="metric-card">
+                <span class="label">Total Sales (MTD)</span>
+                <h4 id="detailTotalSales">Rp 0</h4>
+              </div>
+              <div class="metric-card">
+                <span class="label">Total Hari Kerja</span>
+                <h4 id="detailTotalDays">0 Hari</h4>
+              </div>
+            </div>
+            
+            <div class="chart-container-modal">
+              <h5 style="margin-bottom: 12px; color: var(--text-muted);">Grafik Penjualan Harian</h5>
+              <div class="chart-wrapper">
+                <canvas id="detailStoreChart"></canvas>
+              </div>
+            </div>
           </div>
-          <div class="metric-card">
-            <span class="label">Total Sales (MTD)</span>
-            <h4 id="detailTotalSales">Rp 0</h4>
-          </div>
-          <div class="metric-card">
-            <span class="label">Total Hari Kerja</span>
-            <h4 id="detailTotalDays">0 Hari</h4>
-          </div>
-        </div>
-        
-        <div class="chart-container-modal">
-          <h5 style="margin-bottom: 12px; color: var(--text-muted);">Grafik Penjualan Harian</h5>
-          <div class="chart-wrapper">
-            <canvas id="detailStoreChart"></canvas>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="closeStoreDetail()">Tutup / Kembali</button>
           </div>
         </div>
       </div>
+      
     </div>
+  </div>
   </div>
   
   <div id="modalAddStore" class="modal-overlay">
@@ -190,7 +210,7 @@
       </form>
     </div>
   </div>
-  
+  <script src="../config.js"></script>
   <script src="script.js"></script>
 </body>
 
